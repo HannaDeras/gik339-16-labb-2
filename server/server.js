@@ -6,6 +6,17 @@ const server = express(); // denna rad innehåller en webbserver
 
 const sqlite3 = require("sqlite3").verbose();
 
+server
+  .use(express.json())
+  .use(express.urlencoded({ extended: false }))
+  .use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "*");
+    res.header("Access-Control-Allow-Methods", "*");
+
+    next();
+  });
+
 server.use(express.json()).use(express.urlencoded({ extended: false }));
 
 server.get("/users", (req, res) => {
@@ -25,22 +36,12 @@ server.get("/users", (req, res) => {
     }
   });
 
-  // res.send(`Du gjorde en ${method}-förfrågan till ${url}`);
+  //res.send(`Du gjorde en ${method}-förfrågan till ${url}`);
 });
 
 server.post("/users", (req, res) => {
   const body = req.body;
   res.send(body);
 });
-
-server
-  .use(express.json())
-  .use(express.urlencoded({ extended: false }))
-  .use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "*");
-    res.header("Access-Control-Allow-Methods", "*");
-    next();
-  });
 
 server.listen(3000, () => console.log("Server is running")); //gör det möjligt att göra anrop till servern
