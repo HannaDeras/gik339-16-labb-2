@@ -1,28 +1,15 @@
-const url = "http://localhost:3000/users"; //Här hämtar vi users från vår server
-
-const responseUsers = fetch(url);
-
-responseUsers
-  .then((response) => {
-    console.log(response);
-    return response.json();
-  })
-  .then((users) => console.log(users));
-
-fetch(url)
+fetch("http://localhost:3000/users")
   .then((response) => response.json())
+
   .then((users) => {
+    const ul = document.createElement("ul");
     users.forEach((users) => {
-      const html = `<ul>
-      <li style = "background:${users.color};" >
-    ${users.firstName} ${users.lastName}
-    </li>
-    <span style = "background:${users.color};"> ${users.username} </span>
-     </ul>`;
+      const li = document.createElement("li");
+      li.innerHTML = ` ${users.firstName} ${users.lastName} <br> ${users.username}`;
 
-      document.body.insertAdjacentHTML("beforeend", html);
+      li.style.background = `${users.color}`;
+
+      ul.append(li);
     });
-    return "hej";
-  })
-
-  .then((data) => console.log(data));
+    document.body.append(ul);
+  });
